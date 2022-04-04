@@ -1,0 +1,48 @@
+#!/bin/bash
+if test -f ./remote.conf; then
+    source ./remote.conf
+fi 
+if test -f ./local.conf; then
+    source ./local.conf
+fi 
+
+
+# Allows us to read user input below, assigns stdin to keyboard
+exec < /dev/tty
+
+# check that we have node installed
+while :
+do
+    gomplate=$(gomplate --version)
+    if [ 0 -ne $? ]
+    then
+        echo -e "\033[1mgomplate needs to be installed\033[0m (https://docs.gomplate.ca/installing)"
+        echo -e "Press enter once gomplate is installed"
+        read -r gomplate
+    else
+        break
+    fi
+done
+
+template=$(cat template)
+if [ 0 -eq $? ]
+then
+    echo -e "\033[1mCreating a new sm-0 for $NAME\033[0m"
+    while true; do
+        read -p "Do you wish to continue " yn
+        case $yn in
+            [Yy]* ) break;;
+            [Nn]* ) exit 0;;
+            * ) echo "Please answer yes or no.";;
+        esac
+    done
+    gomplate -f README.md.tmpl > README.md
+    rm README.md.tmpl
+    rm template
+    git add .
+    git commit -am "Instantiated template"
+    git push
+fi
+
+
+
