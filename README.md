@@ -1,3 +1,3 @@
-# {{ .Env.NAME }}
+# go-memdbfs
 
 This is a project
