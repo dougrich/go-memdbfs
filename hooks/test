@@ -1,3 +1,23 @@
 #!/bin/bash
-echo -e "No linting for sm-0"
 
+if test -f ./remote.conf; then
+    source ./remote.conf
+fi 
+if test -f ./local.conf; then
+    source ./local.conf
+fi
+
+SHA=$(git rev-parse HEAD)
+CHANGES=$(git ls-files -m -o --exclude-standard)
+
+if [ "$SHA" != "$last_test_commit" ] || [ ! -z "$CHANGES" ]
+then
+    echo "testing..."
+    go test .
+    test -f ./local.conf && $((cat local.conf | grep -v last_test_commit)> local.new.conf)
+    echo "last_test_commit=$SHA" >> local.new.conf
+    test -f ./local.conf && rm local.conf
+    mv local.new.conf local.conf
+else
+    echo "no changes since last test"
+fi

@@ -6,43 +6,31 @@ if test -f ./local.conf; then
     source ./local.conf
 fi 
 
-
 # Allows us to read user input below, assigns stdin to keyboard
 exec < /dev/tty
 
-# check that we have node installed
 while :
 do
-    gomplate=$(gomplate --version)
+    goversion=$(go version)
     if [ 0 -ne $? ]
     then
-        echo -e "\033[1mgomplate needs to be installed\033[0m (https://docs.gomplate.ca/installing)"
-        echo -e "Press enter once gomplate is installed"
-        read -r gomplate
+        echo -e "\033[1mgo developer tools need to be installed\033[0m (https://go.dev/doc/install)"
+        echo -e "Press enter once go is installed"
+        read -r goversion
     else
         break
     fi
 done
 
-template=$(cat template)
-if [ 0 -eq $? ]
-then
-    echo -e "\033[1mCreating a new sm-0 for $NAME\033[0m"
-    while true; do
-        read -p "Do you wish to continue " yn
-        case $yn in
-            [Yy]* ) break;;
-            [Nn]* ) exit 0;;
-            * ) echo "Please answer yes or no.";;
-        esac
-    done
-    gomplate -f README.md.tmpl > README.md
-    rm README.md.tmpl
-    rm template
-    git add .
-    git commit -am "Instantiated template"
-    git push
-fi
-
-
-
+while :
+do
+    gccommit=$(git-conventional-commits --version)
+    if [ 0 -ne $? ]
+    then
+        echo -e "\033[1mgit-conventional-commits needs to be install\033[0m (https://github.com/qoomon/git-conventional-commits)"
+        echo -e "Press enter once it is installed"
+        read -r goversion
+    else
+        break
+    fi
+done

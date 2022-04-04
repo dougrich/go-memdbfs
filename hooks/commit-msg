@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if test -f ./remote.conf; then
+    source ./remote.conf
+fi 
+if test -f ./local.conf; then
+    source ./local.conf
+fi
+
+# use git-conventional-commits, see https://github.com/qoomon/git-conventional-commits
+git-conventional-commits commit-msg-hook "$1"

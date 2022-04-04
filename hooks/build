@@ -1,3 +1,23 @@
 #!/bin/bash
-echo -e "No building for sm-0"
 
+if test -f ./remote.conf; then
+    source ./remote.conf
+fi 
+if test -f ./local.conf; then
+    source ./local.conf
+fi
+
+SHA=$(git rev-parse HEAD)
+CHANGES=$(git ls-files -m -o --exclude-standard)
+
+if [ "$SHA" != "$last_build_commit" ] || [ ! -z "$CHANGES" ]
+then
+    echo "rebuilding..."
+    go build -o bin/mn .
+    test -f ./local.conf && $((cat local.conf | grep -v last_build_commit)> local.new.conf)
+    echo "last_build_commit=$SHA" >> local.new.conf
+    test -f ./local.conf && rm local.conf
+    mv local.new.conf local.conf
+else
+    echo "no changes since last build"
+fi
