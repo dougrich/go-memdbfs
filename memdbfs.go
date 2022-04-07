@@ -51,6 +51,10 @@ func Stash(o io.Writer, db *memdb.MemDB, schema *memdb.DBSchema) error {
 type TypeFactory map[string]func(json.RawMessage) (interface{}, error)
 
 func Unstash(o io.Reader, db *memdb.MemDB, types TypeFactory) error {
+	if o == nil {
+		// shortcircuit if we don't have a reader
+		return nil
+	}
 	txn := db.Txn(true)
 	dec := json.NewDecoder(o)
 	// read open bracket

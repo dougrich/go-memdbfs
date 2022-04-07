@@ -172,3 +172,10 @@ func TestUnstash(t *testing.T) {
 		t.Errorf("Too few results returned for counts, expected %d, got %d", len(counts), i)
 	}
 }
+
+func TestNilReader(t *testing.T) {
+	err := memdbfs.Unstash(nil, nil, nil)
+	if err != nil {
+		t.Fatalf("Nil case should be OK, got %v", err)
+	}
+}
