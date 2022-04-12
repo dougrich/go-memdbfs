@@ -1,9 +1,9 @@
 #!/bin/bash
-if test -f ./remote.conf; then
-    source ./remote.conf
+if test -f ./remote.env; then
+    source ./remote.env
 fi 
-if test -f ./local.conf; then
-    source ./local.conf
+if test -f ./local.env; then
+    source ./local.env
 fi 
 
 # Allows us to read user input below, assigns stdin to keyboard

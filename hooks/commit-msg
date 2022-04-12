@@ -1,10 +1,10 @@
 #!/bin/bash
 
-if test -f ./remote.conf; then
-    source ./remote.conf
+if test -f ./remote.env; then
+    source ./remote.env
 fi 
-if test -f ./local.conf; then
-    source ./local.conf
+if test -f ./local.env; then
+    source ./local.env
 fi
 
 # use git-conventional-commits, see https://github.com/qoomon/git-conventional-commits

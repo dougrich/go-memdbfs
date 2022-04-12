@@ -1,10 +1,10 @@
 #!/bin/bash
 
-if test -f ./remote.conf; then
-    source ./remote.conf
+if test -f ./remote.env; then
+    source ./remote.env
 fi 
-if test -f ./local.conf; then
-    source ./local.conf
+if test -f ./local.env; then
+    source ./local.env
 fi 
 
 SHA=$(git rev-parse HEAD)
@@ -14,10 +14,10 @@ if [ "$SHA" != "$last_lint_commit" ] || [ ! -z "$CHANGES" ]
 then
     echo "linting..."
     go fmt .
-    test -f ./local.conf && $((cat local.conf | grep -v last_lint_commit)> local.new.conf)
-    echo "last_lint_commit=$SHA" >> local.new.conf
-    test -f ./local.conf && rm local.conf
-    mv local.new.conf local.conf
+    test -f ./local.env && $((cat local.env | grep -v last_lint_commit)> local.new.env)
+    echo "last_lint_commit=$SHA" >> local.new.env
+    test -f ./local.env && rm local.env
+    mv local.new.env local.env
 else
     echo "no changes since last lint"
 fi
